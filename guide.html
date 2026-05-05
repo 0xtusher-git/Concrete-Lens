@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner's Guide | Concrete</title>
+    <meta name="description" content="A jargon-free guide to understanding Concrete and DeFi yield infrastructure.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            yellow: '#F5E97A',
+                            black: '#1A1A1A',
+                            light: '#FEFCE8',
+                            hover: '#E8DC60',
+                            muted: '#6B7280',
+                            border: '#E5E7EB',
+                            code: '#F9F8F4',
+                            grayText: '#374151',
+                            lightGray: '#9CA3AF',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-white font-sans text-brand-grayText">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-brand-black transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex-shrink-0 flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-brand-yellow flex items-center justify-center rounded">
+                        <span class="text-brand-black font-bold text-xl">C</span>
+                    </div>
+                    <span class="text-white font-bold text-xl tracking-tight">Concrete</span>
+                </a>
+                
+                <!-- Desktop Links -->
+                <div class="hidden lg:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html#overview" class="text-white px-3 py-2 text-sm font-medium hover:text-brand-yellow">Overview</a>
+                        <a href="index.html#yield" class="text-white px-3 py-2 text-sm font-medium hover:text-brand-yellow">Yield</a>
+                        <a href="index.html#architecture" class="text-white px-3 py-2 text-sm font-medium hover:text-brand-yellow">Architecture</a>
+                        <a href="index.html#smart-contracts" class="text-white px-3 py-2 text-sm font-medium hover:text-brand-yellow">Smart Contracts</a>
+                        <a href="index.html#fees" class="text-white px-3 py-2 text-sm font-medium hover:text-brand-yellow">Fees</a>
+                        <a href="index.html#tokenomics" class="text-white px-3 py-2 text-sm font-medium hover:text-brand-yellow">Tokenomics</a>
+                        <a href="index.html#risks" class="text-white px-3 py-2 text-sm font-medium hover:text-brand-yellow">Risks</a>
+                        <a href="index.html#ecosystem" class="text-white px-3 py-2 text-sm font-medium hover:text-brand-yellow">Ecosystem</a>
+                        <a href="guide.html" class="text-brand-yellow px-3 py-2 text-sm font-medium border-b-2 border-brand-yellow">Beginner's Guide</a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="lg:hidden">
+                    <button id="mobile-menu-button" class="text-white p-2">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-black border-t border-white/10 pb-4">
+            <div class="px-2 pt-2 space-y-1">
+                <a href="index.html#overview" class="block text-white px-3 py-2 text-base font-medium">Overview</a>
+                <a href="index.html#yield" class="block text-white px-3 py-2 text-base font-medium">Yield</a>
+                <a href="index.html#architecture" class="block text-white px-3 py-2 text-base font-medium">Architecture</a>
+                <a href="index.html#smart-contracts" class="block text-white px-3 py-2 text-base font-medium">Smart Contracts</a>
+                <a href="index.html#fees" class="block text-white px-3 py-2 text-base font-medium">Fees</a>
+                <a href="index.html#tokenomics" class="block text-white px-3 py-2 text-base font-medium">Tokenomics</a>
+                <a href="index.html#risks" class="block text-white px-3 py-2 text-base font-medium">Risks</a>
+                <a href="index.html#ecosystem" class="block text-white px-3 py-2 text-base font-medium">Ecosystem</a>
+                <a href="guide.html" class="block text-brand-yellow px-3 py-2 text-base font-medium">Beginner's Guide</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="bg-brand-black text-white py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">Everything about Concrete, explained simply</h1>
+                <p class="text-xl text-brand-lightGray mb-12 max-w-3xl mx-auto">
+                    New to DeFi or just new to Concrete? Read or listen to each topic below. No jargon, no technical terms — just plain English.
+                </p>
+                
+                <!-- Voice Bar Card -->
+                <div class="max-w-xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <button id="btn-listen-all" class="w-full sm:w-auto px-8 py-3 bg-brand-yellow text-brand-black font-bold rounded-lg hover:bg-brand-hover transition-all flex items-center justify-center">
+                            <i data-lucide="play" class="mr-2 w-5 h-5"></i>
+                            <span>Listen to full guide</span>
+                        </button>
+                        <button id="btn-stop-speech" class="hidden w-full sm:w-auto px-8 py-3 border border-red-500 text-red-500 font-bold rounded-lg hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+                            <i data-lucide="square" class="mr-2 w-5 h-5"></i>
+                            <span>Stop</span>
+                        </button>
+                    </div>
+                    <div id="speech-status" class="mt-4 text-sm text-brand-lightGray font-medium opacity-0 transition-opacity">
+                        Reading: <span id="current-topic-name">None</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topic Pills Nav -->
+        <div class="sticky top-16 z-40 bg-brand-light border-y border-brand-border py-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center space-x-4 overflow-x-auto pb-2 scrollbar-hide no-scrollbar">
+                    <button class="pill-btn whitespace-nowrap px-6 py-2 bg-white border border-brand-border rounded-full text-sm font-bold hover:border-brand-yellow transition-all" data-target="topic-1">1. What is Concrete?</button>
+                    <button class="pill-btn whitespace-nowrap px-6 py-2 bg-white border border-brand-border rounded-full text-sm font-bold hover:border-brand-yellow transition-all" data-target="topic-2">2. How yield works</button>
+                    <button class="pill-btn whitespace-nowrap px-6 py-2 bg-white border border-brand-border rounded-full text-sm font-bold hover:border-brand-yellow transition-all" data-target="topic-3">3. ctTokens explained</button>
+                    <button class="pill-btn whitespace-nowrap px-6 py-2 bg-white border border-brand-border rounded-full text-sm font-bold hover:border-brand-yellow transition-all" data-target="topic-4">4. Vault types</button>
+                    <button class="pill-btn whitespace-nowrap px-6 py-2 bg-white border border-brand-border rounded-full text-sm font-bold hover:border-brand-yellow transition-all" data-target="topic-5">5. Fees</button>
+                    <button class="pill-btn whitespace-nowrap px-6 py-2 bg-white border border-brand-border rounded-full text-sm font-bold hover:border-brand-yellow transition-all" data-target="topic-6">6. Risks</button>
+                    <button class="pill-btn whitespace-nowrap px-6 py-2 bg-white border border-brand-border rounded-full text-sm font-bold hover:border-brand-yellow transition-all" data-target="topic-7">7. Token & Bags</button>
+                    <button class="pill-btn whitespace-nowrap px-6 py-2 bg-white border border-brand-border rounded-full text-sm font-bold hover:border-brand-yellow transition-all" data-target="topic-8">8. Who is behind it</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="divide-y divide-gray-100">
+            <!-- Topic 1 -->
+            <section id="topic-1" class="topic-section py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div class="w-12 h-12 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">1</div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-brand-black">What is Concrete?</h2>
+                                <button class="read-section-btn flex items-center space-x-2 px-4 py-2 rounded-lg border border-brand-border hover:border-brand-yellow transition-all text-sm font-bold" data-topic="1">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Read this</span>
+                                </button>
+                            </div>
+                            <div class="topic-text text-lg leading-relaxed text-brand-grayText mb-8">
+                                Concrete is a DeFi protocol that automatically earns you yield on your crypto. Think of it like a smart savings account — you deposit your tokens, and Concrete moves them around different lending platforms to find you the best interest rate at all times. It was built by Blueprint Finance and is backed by Polychain Capital, YZi Labs (formerly Binance Labs), and VanEck. At its peak it held over $1 billion in deposits.
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                <div class="p-4 bg-brand-black text-white border-l-4 border-brand-yellow rounded-lg">
+                                    <p class="text-brand-yellow font-bold">$17M+</p>
+                                    <p class="text-[10px] text-brand-lightGray">Raised</p>
+                                </div>
+                                <div class="p-4 bg-brand-black text-white border-l-4 border-brand-yellow rounded-lg">
+                                    <p class="text-brand-yellow font-bold">>$1B</p>
+                                    <p class="text-[10px] text-brand-lightGray">Peak TVL</p>
+                                </div>
+                                <div class="p-4 bg-brand-black text-white border-l-4 border-brand-yellow rounded-lg">
+                                    <p class="text-brand-yellow font-bold">~8.5%</p>
+                                    <p class="text-[10px] text-brand-lightGray">USDT APR</p>
+                                </div>
+                                <div class="p-4 bg-brand-black text-white border-l-4 border-brand-yellow rounded-lg">
+                                    <p class="text-brand-yellow font-bold">125K</p>
+                                    <p class="text-[10px] text-brand-lightGray">Followers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Topic 2 -->
+            <section id="topic-2" class="topic-section py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div class="w-12 h-12 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">2</div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-brand-black">How yield works</h2>
+                                <button class="read-section-btn flex items-center space-x-2 px-4 py-2 rounded-lg border border-brand-border hover:border-brand-yellow transition-all text-sm font-bold" data-topic="2">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Read this</span>
+                                </button>
+                            </div>
+                            <div class="topic-text text-lg leading-relaxed text-brand-grayText mb-8">
+                                When you deposit into Concrete, your money doesn't just sit there. Concrete spreads it across lending platforms like Aave, Compound, Morpho, and Pendle — wherever the interest rate is highest. A system called the Allocator watches rates constantly and moves your funds automatically the moment a better rate appears. Concrete also uses quantitative models — similar to hedge fund math — to predict market conditions and optimize where your money goes. They claim this beats doing it manually by 12 to 18 percent per year.
+                            </div>
+                            <div class="bg-brand-light p-8 rounded-2xl border border-brand-border">
+                                <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-10 h-10 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center mb-2"><i data-lucide="wallet" class="w-5 h-5"></i></div>
+                                        <span class="text-xs font-bold">You deposit</span>
+                                    </div>
+                                    <i data-lucide="arrow-right" class="hidden md:block text-brand-yellow"></i>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-10 h-10 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center mb-2"><i data-lucide="share-2" class="w-5 h-5"></i></div>
+                                        <span class="text-xs font-bold">Allocator spreads</span>
+                                    </div>
+                                    <i data-lucide="arrow-right" class="hidden md:block text-brand-yellow"></i>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-10 h-10 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center mb-2"><i data-lucide="banknote" class="w-5 h-5"></i></div>
+                                        <span class="text-xs font-bold">Platforms pay</span>
+                                    </div>
+                                    <i data-lucide="arrow-right" class="hidden md:block text-brand-yellow"></i>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-10 h-10 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center mb-2"><i data-lucide="trending-up" class="w-5 h-5"></i></div>
+                                        <span class="text-xs font-bold">Yield accrues</span>
+                                    </div>
+                                    <i data-lucide="arrow-right" class="hidden md:block text-brand-yellow"></i>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-10 h-10 bg-brand-yellow text-brand-black rounded-full flex items-center justify-center mb-2"><i data-lucide="check" class="w-5 h-5"></i></div>
+                                        <span class="text-xs font-bold">Balance grows</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Topic 3 -->
+            <section id="topic-3" class="topic-section py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div class="w-12 h-12 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">3</div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-brand-black">ctTokens explained</h2>
+                                <button class="read-section-btn flex items-center space-x-2 px-4 py-2 rounded-lg border border-brand-border hover:border-brand-yellow transition-all text-sm font-bold" data-topic="3">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Read this</span>
+                                </button>
+                            </div>
+                            <div class="topic-text text-lg leading-relaxed text-brand-grayText mb-8">
+                                When you deposit into Concrete you receive a special token called a ctToken. If you deposit USDT you get ctUSDT. If you deposit ETH you get ctETH. This token is your receipt — it proves you own a share of the vault. As the vault earns yield, every ctToken automatically becomes worth more of the original asset. You don't receive separate interest payments — the value of your ctTokens quietly grows over time. When you want your money back, you redeem your ctTokens and receive your original deposit plus all the yield earned.
+                            </div>
+                            <div class="bg-brand-light p-6 rounded-xl border-l-4 border-brand-yellow">
+                                <p class="text-sm font-bold mb-2 uppercase tracking-wide">Example:</p>
+                                <p class="text-lg text-brand-black">
+                                    Deposit 1,000 USDT → receive 1,000 ctUSDT → after one year at 8.5% → redeem for <span class="font-bold underline decoration-brand-yellow">~1,085 USDT</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Topic 4 -->
+            <section id="topic-4" class="topic-section py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div class="w-12 h-12 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">4</div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-brand-black">Vault types</h2>
+                                <button class="read-section-btn flex items-center space-x-2 px-4 py-2 rounded-lg border border-brand-border hover:border-brand-yellow transition-all text-sm font-bold" data-topic="4">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Read this</span>
+                                </button>
+                            </div>
+                            <div class="topic-text text-lg leading-relaxed text-brand-grayText mb-8">
+                                Concrete has different vaults depending on what you deposit and your risk preference. The main product is the USDT DeFi Vault launched with Binance Wallet, offering around 8.5% APR with a 100 USDT minimum and a 7-day withdrawal window. Vanilla lending vaults are the simplest option — they just lend your tokens on Aave or Compound and earn 2 to 3 percent per year with lower risk. Institutional vaults for larger depositors charge a slightly reduced fee of 1.25 percent per year. The yield rate is not fixed — it changes with market conditions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Topic 5 -->
+            <section id="topic-5" class="topic-section py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div class="w-12 h-12 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">5</div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-brand-black">Fees</h2>
+                                <button class="read-section-btn flex items-center space-x-2 px-4 py-2 rounded-lg border border-brand-border hover:border-brand-yellow transition-all text-sm font-bold" data-topic="5">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Read this</span>
+                                </button>
+                            </div>
+                            <div class="topic-text text-lg leading-relaxed text-brand-grayText mb-8">
+                                Concrete charges no deposit fee, no withdrawal fee, and no performance fee. The only cost is a 1.5 percent annual management fee on your deposited amount. On $10,000 that is $150 per year. This fee is not taken from your wallet directly — instead new vault shares are quietly minted to the fee recipient, which dilutes all holders slightly over time. Institutional vaults pay a reduced fee of 1.25 percent per year.
+                            </div>
+                            <div class="overflow-x-auto border border-brand-border rounded-xl">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-50 border-b border-brand-border">
+                                        <tr>
+                                            <th class="text-left py-3 px-4 font-bold">Fee type</th>
+                                            <th class="text-left py-3 px-4 font-bold">Amount</th>
+                                            <th class="text-left py-3 px-4 font-bold">Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-brand-border">
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">Management Fee</td>
+                                            <td class="py-3 px-4 font-bold">1.5% / year</td>
+                                            <td class="py-3 px-4 text-brand-muted italic">Dilutes vault share price</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">Institutional Fee</td>
+                                            <td class="py-3 px-4 font-bold">1.25% / year</td>
+                                            <td class="py-3 px-4 text-brand-muted italic">For select partners</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">Deposit / Withdrawal</td>
+                                            <td class="py-3 px-4 font-bold text-green-600">0%</td>
+                                            <td class="py-3 px-4 text-brand-muted italic">Completely waived</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Topic 6 -->
+            <section id="topic-6" class="topic-section py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div class="w-12 h-12 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">6</div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-brand-black">Risks</h2>
+                                <button class="read-section-btn flex items-center space-x-2 px-4 py-2 rounded-lg border border-brand-border hover:border-brand-yellow transition-all text-sm font-bold" data-topic="6">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Read this</span>
+                                </button>
+                            </div>
+                            <div class="topic-text text-lg leading-relaxed text-brand-grayText mb-8">
+                                Like all DeFi, Concrete carries risks. Smart contract risk: the protocol is code and could have bugs — it has been audited by Trail of Bits, Halborn, and Code4rena, but audits don't guarantee safety. Variable yield: the 8.5% rate is not a promise — it changes daily. Withdrawal delay: async vaults have a 7-day wait before you get your funds back. Strategy risk: Concrete uses many underlying platforms — if one of them fails, it could affect your funds. This is not a bank — there is no deposit insurance.
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-6 bg-white border border-brand-border border-l-4 border-red-500 rounded-lg shadow-sm">
+                                    <p class="font-bold mb-1">Smart Contract Risk</p>
+                                    <p class="text-xs text-brand-muted">Code bugs or vulnerabilities.</p>
+                                </div>
+                                <div class="p-6 bg-white border border-brand-border border-l-4 border-amber-500 rounded-lg shadow-sm">
+                                    <p class="font-bold mb-1">Variable Yield</p>
+                                    <p class="text-xs text-brand-muted">Rates can drop at any time.</p>
+                                </div>
+                                <div class="p-6 bg-white border border-brand-border border-l-4 border-blue-500 rounded-lg shadow-sm">
+                                    <p class="font-bold mb-1">Withdrawal Delay</p>
+                                    <p class="text-xs text-brand-muted">7-day wait for some vaults.</p>
+                                </div>
+                                <div class="p-6 bg-white border border-brand-border border-l-4 border-amber-500 rounded-lg shadow-sm">
+                                    <p class="font-bold mb-1">Strategy Risk</p>
+                                    <p class="text-xs text-brand-muted">Dependency on other protocols.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Topic 7 -->
+            <section id="topic-7" class="topic-section py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div class="w-12 h-12 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">7</div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-brand-black">Token & Bags airdrop</h2>
+                                <button class="read-section-btn flex items-center space-x-2 px-4 py-2 rounded-lg border border-brand-border hover:border-brand-yellow transition-all text-sm font-bold" data-topic="7">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Read this</span>
+                                </button>
+                            </div>
+                            <div class="topic-text text-lg leading-relaxed text-brand-grayText mb-8">
+                                Concrete has not launched a token yet. To reward early users, they run a points system called Bags. You earn Bags by connecting your wallet, completing social tasks on X, depositing into vaults, using the protocol, and referring friends — all at points.concrete.xyz. When Concrete eventually launches their token, Bags are expected to convert into an airdrop allocation. A $200,000 token rewards campaign ran for 21 days and ended April 2, 2026 — early depositors earned the largest shares. Exact tokenomics have not been officially disclosed.
+                            </div>
+                            <div class="bg-brand-yellow p-4 rounded-xl text-center font-bold text-brand-black uppercase tracking-widest text-xs">
+                                Token not yet launched — TBA
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Topic 8 -->
+            <section id="topic-8" class="topic-section py-24 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div class="w-12 h-12 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">8</div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-3xl font-bold text-brand-black">Who is behind it</h2>
+                                <button class="read-section-btn flex items-center space-x-2 px-4 py-2 rounded-lg border border-brand-border hover:border-brand-yellow transition-all text-sm font-bold" data-topic="8">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Read this</span>
+                                </button>
+                            </div>
+                            <div class="topic-text text-lg leading-relaxed text-brand-grayText mb-8">
+                                Concrete is built by Blueprint Finance, a team focused on institutional-grade DeFi infrastructure. Their backers include Polychain Capital (one of the largest crypto venture funds), YZi Labs (previously Binance Labs — the investment arm of Binance), and VanEck (a major traditional finance asset manager). They raised $7.5 million in a seed round and $9.5 million in a strategic round, totalling over $17 million. Partners include Binance Wallet, Figment, Arbitrum, Hypernative (security monitoring), and TRES Finance (accounting verification). Their sister product on Solana is called Glow Finance.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-black text-white pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-brand-yellow flex items-center justify-center rounded">
+                            <span class="text-brand-black font-bold text-xl">C</span>
+                        </div>
+                        <span class="text-white font-bold text-xl tracking-tight">Concrete</span>
+                    </div>
+                    <p class="text-brand-lightGray text-sm">Built by Blueprint Finance</p>
+                </div>
+                <div class="flex flex-wrap gap-x-6 gap-y-3">
+                    <a href="index.html#overview" class="text-sm text-brand-lightGray hover:text-brand-yellow">Overview</a>
+                    <a href="index.html#yield" class="text-sm text-brand-lightGray hover:text-brand-yellow">Yield</a>
+                    <a href="index.html#architecture" class="text-sm text-brand-lightGray hover:text-brand-yellow">Architecture</a>
+                    <a href="index.html#smart-contracts" class="text-sm text-brand-lightGray hover:text-brand-yellow">Smart Contracts</a>
+                    <a href="index.html#fees" class="text-sm text-brand-lightGray hover:text-brand-yellow">Fees</a>
+                    <a href="index.html#tokenomics" class="text-sm text-brand-lightGray hover:text-brand-yellow">Tokenomics</a>
+                    <a href="index.html#risks" class="text-sm text-brand-lightGray hover:text-brand-yellow">Risks</a>
+                    <a href="index.html#ecosystem" class="text-sm text-brand-lightGray hover:text-brand-yellow">Ecosystem</a>
+                    <a href="guide.html" class="text-sm text-brand-lightGray hover:text-brand-yellow">Beginner's Guide</a>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <a href="https://x.com/ConcreteXYZ" target="_blank" class="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://docs.concrete.xyz" target="_blank" class="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 text-center text-xs text-brand-lightGray">
+                <p>© 2026 Blueprint Finance · Not financial advice · Restricted jurisdictions apply</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="guide.js"></script>
+</body>
+</html>

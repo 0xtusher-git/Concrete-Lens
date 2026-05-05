@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concrete | Full-stack Yield Infrastructure for DeFi</title>
+    <meta name="description" content="Concrete aggregates yield across Aave, Compound, Morpho, Pendle, Curve and more into a single ERC-4626 vault.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            yellow: '#F5E97A',
+                            black: '#1A1A1A',
+                            light: '#FEFCE8',
+                            hover: '#E8DC60',
+                            muted: '#6B7280',
+                            border: '#E5E7EB',
+                            code: '#F9F8F4',
+                            grayText: '#374151',
+                            lightGray: '#9CA3AF',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'card': '0 1px 3px rgba(0,0,0,0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-white font-sans text-brand-grayText">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-brand-black transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-brand-yellow flex items-center justify-center rounded">
+                        <span class="text-brand-black font-bold text-xl">C</span>
+                    </div>
+                    <span class="text-white font-bold text-xl tracking-tight">Concrete</span>
+                </div>
+                
+                <!-- Desktop Links -->
+                <div class="hidden lg:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#overview" class="nav-link text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Overview</a>
+                        <a href="#yield" class="nav-link text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Yield</a>
+                        <a href="#architecture" class="nav-link text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Architecture</a>
+                        <a href="#smart-contracts" class="nav-link text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Smart Contracts</a>
+                        <a href="#fees" class="nav-link text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Fees</a>
+                        <a href="#tokenomics" class="nav-link text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Tokenomics</a>
+                        <a href="#risks" class="nav-link text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Risks</a>
+                        <a href="#ecosystem" class="nav-link text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Ecosystem</a>
+                        <a href="guide.html" class="text-white px-3 py-2 text-sm font-medium border-b-2 border-transparent hover:text-brand-yellow transition-colors">Beginner's Guide</a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="lg:hidden">
+                    <button id="mobile-menu-button" class="text-white p-2">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-black border-t border-white/10 pb-4">
+            <div class="px-2 pt-2 space-y-1">
+                <a href="#overview" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Overview</a>
+                <a href="#yield" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Yield</a>
+                <a href="#architecture" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Architecture</a>
+                <a href="#smart-contracts" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Smart Contracts</a>
+                <a href="#fees" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Fees</a>
+                <a href="#tokenomics" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Tokenomics</a>
+                <a href="#risks" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Risks</a>
+                <a href="#ecosystem" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Ecosystem</a>
+                <a href="guide.html" class="block text-white px-3 py-2 text-base font-medium hover:text-brand-yellow">Beginner's Guide</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- SECTION 1: HERO / OVERVIEW -->
+        <section id="overview" class="bg-brand-black text-white py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl">
+                    <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+                        Full-stack yield infrastructure <br class="hidden md:block"> for DeFi
+                    </h1>
+                    <p class="text-xl text-brand-lightGray mb-12 max-w-2xl">
+                        Concrete aggregates yield across Aave, Compound, Morpho, Pendle, Curve and more — into a single ERC-4626 vault. Built by Blueprint Finance. Backed by Polychain, YZi Labs and VanEck.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <div class="metric-card bg-brand-black text-white border-l-4 border-brand-yellow p-6 rounded-lg shadow-card">
+                            <p class="text-brand-yellow text-2xl font-bold">$17M+</p>
+                            <p class="text-brand-lightGray text-sm">Total raised</p>
+                        </div>
+                        <div class="metric-card bg-brand-black text-white border-l-4 border-brand-yellow p-6 rounded-lg shadow-card">
+                            <p class="text-brand-yellow text-2xl font-bold">>$1B</p>
+                            <p class="text-brand-lightGray text-sm">Peak TVL</p>
+                        </div>
+                        <div class="metric-card bg-brand-black text-white border-l-4 border-brand-yellow p-6 rounded-lg shadow-card">
+                            <p class="text-brand-yellow text-2xl font-bold">~8.5%</p>
+                            <p class="text-brand-lightGray text-sm">USDT APR (live)</p>
+                        </div>
+                        <div class="metric-card bg-brand-black text-white border-l-4 border-brand-yellow p-6 rounded-lg shadow-card">
+                            <p class="text-brand-yellow text-2xl font-bold">125K</p>
+                            <p class="text-brand-lightGray text-sm">X followers</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="https://docs.concrete.xyz" target="_blank" class="inline-flex items-center justify-center px-8 py-3 bg-brand-yellow text-brand-black font-semibold rounded-lg hover:bg-brand-hover transition-colors">
+                            View Docs <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </a>
+                        <a href="https://x.com/ConcreteXYZ" target="_blank" class="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors">
+                            Follow on X <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: YIELD & VAULTS -->
+        <section id="yield" class="bg-white py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <p class="text-brand-yellow font-bold text-xs uppercase tracking-widest mb-2">Yield & Vaults</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-black">How Concrete generates yield</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-20">
+                    <div class="text-lg leading-relaxed text-brand-grayText">
+                        <p>
+                            Concrete uses an ERC-4626 tokenized vault that issues ctTokens (e.g. ctUSDT, ctETH) as yield-bearing receipt tokens. 
+                            An allocator role continuously rebalances capital across money markets, Pendle yield markets, Curve pools, and flash loan strategies to maximize risk-adjusted returns.
+                        </p>
+                    </div>
+                    <div class="space-y-6">
+                        <!-- Vault Card A -->
+                        <div class="bg-white border border-brand-border rounded-xl p-6 shadow-card border-l-4 border-brand-yellow">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="font-bold text-lg">USDT DeFi Vault — Binance Wallet</h3>
+                                    <p class="text-sm text-brand-muted">Receipt token: ctDefiUSDT</p>
+                                </div>
+                                <span class="px-3 py-1 bg-brand-yellow/20 text-brand-black text-xs font-bold rounded-full">Live</span>
+                            </div>
+                            <div class="text-3xl font-bold text-brand-yellow mb-4">~8.5% <span class="text-sm text-brand-muted font-normal">APR</span></div>
+                            <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-muted border-t border-brand-border pt-4">
+                                <span>Min deposit 100 USDT</span>
+                                <span>•</span>
+                                <span>7-day queue</span>
+                                <span>•</span>
+                                <span>Fee 1.5%/yr</span>
+                            </div>
+                        </div>
+                        <!-- Vault Card B -->
+                        <div class="bg-white border border-brand-border rounded-xl p-6 shadow-card">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="font-bold text-lg">Sentora / Lombard Vault</h3>
+                                    <p class="text-sm text-brand-muted">Receipt token: ctSentora</p>
+                                </div>
+                                <span class="px-3 py-1 bg-gray-100 text-brand-black text-xs font-bold rounded-full">Reduced fee</span>
+                            </div>
+                            <div class="text-3xl font-bold text-brand-black mb-4">Variable <span class="text-sm text-brand-muted font-normal">APR</span></div>
+                            <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-muted border-t border-brand-border pt-4">
+                                <span>Fee 1.25%/yr</span>
+                                <span>•</span>
+                                <span>No performance/deposit fees</span>
+                            </div>
+                        </div>
+                        <!-- Vault Card C -->
+                        <div class="bg-white border border-brand-border rounded-xl p-6 shadow-card">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="font-bold text-lg">Vanilla Lending (Aave / Compound)</h3>
+                                    <p class="text-sm text-brand-muted">Receipt token: ctVanilla</p>
+                                </div>
+                                <span class="px-3 py-1 bg-gray-100 text-brand-black text-xs font-bold rounded-full">Baseline</span>
+                            </div>
+                            <div class="text-3xl font-bold text-brand-black mb-4">2–3% <span class="text-sm text-brand-muted font-normal">APR</span></div>
+                            <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-muted border-t border-brand-border pt-4">
+                                <span>Stable</span>
+                                <span>•</span>
+                                <span>Low-risk</span>
+                                <span>•</span>
+                                <span>Foundation strategy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-brand-light p-8 rounded-xl border border-brand-border">
+                        <div class="w-12 h-12 bg-brand-yellow flex items-center justify-center rounded-lg mb-6">
+                            <i data-lucide="refresh-cw" class="text-brand-black"></i>
+                        </div>
+                        <h4 class="font-bold text-xl mb-3">Dynamic rebalancing</h4>
+                        <p class="text-brand-muted">Moves funds between Aave, Compound, Radiant, Morpho based on real-time rates.</p>
+                    </div>
+                    <div class="bg-brand-light p-8 rounded-xl border border-brand-border">
+                        <div class="w-12 h-12 bg-brand-yellow flex items-center justify-center rounded-lg mb-6">
+                            <i data-lucide="bar-chart-2" class="text-brand-black"></i>
+                        </div>
+                        <h4 class="font-bold text-xl mb-3">Pendle yield markets</h4>
+                        <p class="text-brand-muted">Structured fixed/floating yield exposure for optimized returns.</p>
+                    </div>
+                    <div class="bg-brand-light p-8 rounded-xl border border-brand-border">
+                        <div class="w-12 h-12 bg-brand-yellow flex items-center justify-center rounded-lg mb-6">
+                            <i data-lucide="zap" class="text-brand-black"></i>
+                        </div>
+                        <h4 class="font-bold text-xl mb-3">Leveraged yield</h4>
+                        <p class="text-brand-muted">Flash loans and capital disbursements earn additional protocol fees.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ARCHITECTURE -->
+        <section id="architecture" class="bg-brand-light py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <p class="text-brand-yellow font-bold text-xs uppercase tracking-widest mb-2">Architecture</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-black">From deposit to yield</h2>
+                </div>
+
+                <!-- Flow Diagram -->
+                <div class="bg-white border border-brand-border rounded-2xl p-12 mb-20 shadow-card">
+                    <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center mb-4">
+                                <i data-lucide="user"></i>
+                            </div>
+                            <span class="font-bold text-sm">User deposits<br>asset</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="hidden lg:block text-brand-yellow"></i>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center mb-4">
+                                <i data-lucide="coins"></i>
+                            </div>
+                            <span class="font-bold text-sm">Vault mints<br>ctTokens</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="hidden lg:block text-brand-yellow"></i>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center mb-4">
+                                <i data-lucide="arrow-right-left"></i>
+                            </div>
+                            <span class="font-bold text-sm">Allocator distributes<br>to strategies</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="hidden lg:block text-brand-yellow"></i>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 bg-brand-black text-brand-yellow rounded-full flex items-center justify-center mb-4">
+                                <i data-lucide="trending-up"></i>
+                            </div>
+                            <span class="font-bold text-sm">Yield accrues,<br>NAV rises</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="hidden lg:block text-brand-yellow"></i>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 bg-brand-yellow text-brand-black rounded-full flex items-center justify-center mb-4">
+                                <i data-lucide="check-circle"></i>
+                            </div>
+                            <span class="font-bold text-sm">Redeem ctTokens for<br>principal + yield</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div>
+                        <h4 class="font-bold text-xl mb-4 border-b-2 border-brand-yellow pb-2 inline-block">ERC-4626 vault</h4>
+                        <p class="text-brand-muted leading-relaxed">
+                            Single-asset, multi-strategy vault. Issues ERC-20 share tokens. Holds N strategies simultaneously. Accounting via cached totalAssets state variable — not balanceOf. Prevents inflation attacks.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xl mb-4 border-b-2 border-brand-yellow pb-2 inline-block">Quantitative framework</h4>
+                        <p class="text-brand-muted leading-relaxed">
+                            TimescaleDB data pipeline. ML + stat models across 5hr–30 day horizons. C Scores (0–10 bearish→bullish). DMRA (Dynamic Market Regime Adaptation). Portfolio optimizer. Backtester. EMS (execution management).
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xl mb-4 border-b-2 border-brand-yellow pb-2 inline-block">Automated accounting</h4>
+                        <p class="text-brand-muted leading-relaxed">
+                            3-party system: Transaction Proposer tracks balances → Independent Signer validates → Smart contract accepts only updates within expected yield range. Monitored by Hypernative. Verified by TRES Finance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: SMART CONTRACTS -->
+        <section id="smart-contracts" class="bg-white py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <p class="text-brand-yellow font-bold text-xs uppercase tracking-widest mb-2">Smart Contracts</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-black">Technical architecture</h2>
+                </div>
+
+                <div class="bg-white border border-brand-border rounded-2xl overflow-hidden shadow-card">
+                    <!-- Tabs -->
+                    <div class="flex overflow-x-auto border-b border-brand-border bg-gray-50 no-scrollbar">
+                        <button class="tab-btn active px-6 py-4 text-sm font-bold border-b-2 border-brand-yellow bg-white whitespace-nowrap" data-tab="tab-factory">Factory</button>
+                        <button class="tab-btn px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:bg-gray-100 whitespace-nowrap" data-tab="tab-vaults">Vaults</button>
+                        <button class="tab-btn px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:bg-gray-100 whitespace-nowrap" data-tab="tab-strategies">Strategies</button>
+                        <button class="tab-btn px-6 py-4 text-sm font-bold border-b-2 border-transparent hover:bg-gray-100 whitespace-nowrap" data-tab="tab-hooks">Hooks & Fees</button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="p-8">
+                        <div id="tab-factory" class="tab-content block">
+                            <p class="mb-6 text-brand-muted">UUPS upgradeable proxy + EIP-7201 storage. Permissionless vault deployment. Vault registry (mapping address→bool). Migratability matrix for upgrades.</p>
+                            <pre class="bg-brand-black text-white p-6 rounded-xl overflow-x-auto font-mono text-sm"><code><span class="text-blue-400">function</span> <span class="text-yellow-400">create</span>(uint64 version, address ownerAddr, bytes calldata data, bytes32 salt) <span class="text-blue-400">public</span> <span class="text-blue-400">returns</span> (address)
+<span class="text-blue-400">function</span> <span class="text-yellow-400">upgrade</span>(address vault, uint64 newVersion, bytes calldata data) <span class="text-blue-400">external</span>
+<span class="text-blue-400">function</span> <span class="text-yellow-400">predictVaultAddress</span>(uint64 version, address ownerAddr, bytes calldata data, bytes32 salt)</code></pre>
+                        </div>
+                        <div id="tab-vaults" class="tab-content hidden">
+                            <p class="mb-6 text-brand-muted">Standard ERC-4626 implementation with enhanced security for multi-strategy allocation.</p>
+                            <pre class="bg-brand-black text-white p-6 rounded-xl overflow-x-auto font-mono text-sm"><code><span class="text-blue-400">function</span> <span class="text-yellow-400">deposit</span>(uint256 assets, address receiver) <span class="text-blue-400">public</span> <span class="text-blue-400">returns</span> (uint256 shares)
+<span class="text-blue-400">function</span> <span class="text-yellow-400">withdraw</span>(uint256 assets, address receiver, address owner) <span class="text-blue-400">public</span> <span class="text-blue-400">returns</span> (uint256 shares)</code></pre>
+                        </div>
+                        <div id="tab-strategies" class="tab-content hidden">
+                            <p class="mb-6 text-brand-muted">Strategies for Aave, Compound, Morpho, and Pendle yield optimization.</p>
+                            <pre class="bg-brand-black text-white p-6 rounded-xl overflow-x-auto font-mono text-sm"><code><span class="text-blue-400">function</span> <span class="text-yellow-400">harvest</span>() <span class="text-blue-400">external</span>
+<span class="text-blue-400">function</span> <span class="text-yellow-400">rebalance</span>(uint256 amount) <span class="text-blue-400">external</span></code></pre>
+                        </div>
+                        <div id="tab-hooks" class="tab-content hidden">
+                            <p class="mb-6 text-brand-muted">Pre/Post hooks for deposit and withdrawal tracking and fee distribution.</p>
+                            <pre class="bg-brand-black text-white p-6 rounded-xl overflow-x-auto font-mono text-sm"><code><span class="text-blue-400">function</span> <span class="text-yellow-400">beforeDeposit</span>(uint256 assets, uint256 shares) <span class="text-blue-400">internal</span> <span class="text-blue-400">override</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: FEES -->
+        <section id="fees" class="bg-brand-light py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <p class="text-brand-yellow font-bold text-xs uppercase tracking-widest mb-2">Fees</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-black">Transparent fee structure</h2>
+                </div>
+
+                <div class="bg-white border border-brand-border rounded-2xl overflow-hidden shadow-card mb-12">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-brand-black text-white">
+                                    <th class="text-left py-4 px-6 font-bold whitespace-nowrap">Fee type</th>
+                                    <th class="text-left py-4 px-6 font-bold whitespace-nowrap">Amount</th>
+                                    <th class="text-left py-4 px-6 font-bold">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border">
+                                <tr>
+                                    <td class="py-4 px-6 font-semibold">Deposit / Withdrawal</td>
+                                    <td class="py-4 px-6 font-bold text-green-600">0%</td>
+                                    <td class="py-4 px-6 text-brand-muted">Completely waived</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-6 font-semibold">AUM Fee (Standard)</td>
+                                    <td class="py-4 px-6 font-bold text-brand-black">1.5% / year</td>
+                                    <td class="py-4 px-6 text-brand-muted italic">Dilutes vault share price over time</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-6 font-semibold">AUM Fee (Institutional)</td>
+                                    <td class="py-4 px-6 font-bold text-brand-black">1.25% / year</td>
+                                    <td class="py-4 px-6 text-brand-muted italic">For select partners</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: TOKENOMICS -->
+        <section id="tokenomics" class="bg-white py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center">
+                    <p class="text-brand-yellow font-bold text-xs uppercase tracking-widest mb-2">Tokenomics</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-black mb-4">Token & Bags airdrop</h2>
+                    <div class="inline-block bg-brand-yellow text-brand-black px-6 py-2 rounded-full font-bold text-sm uppercase tracking-widest">
+                        Token not yet launched — TBA
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="bg-brand-light p-8 rounded-2xl border border-brand-border">
+                        <h3 class="text-2xl font-bold mb-6">Earn Bags, get the airdrop</h3>
+                        <p class="text-brand-muted mb-6 leading-relaxed">
+                            Bags is the official reward system for early Concrete users. Earn points by connecting your wallet, completing social tasks, and depositing into vaults. Bags will eventually convert to Concrete tokens.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center space-x-3">
+                                <i data-lucide="check-circle" class="text-brand-yellow w-5 h-5"></i>
+                                <span class="font-bold text-sm">Wallet connection points</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i data-lucide="check-circle" class="text-brand-yellow w-5 h-5"></i>
+                                <span class="font-bold text-sm">Deposit TVL multiplier</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i data-lucide="check-circle" class="text-brand-yellow w-5 h-5"></i>
+                                <span class="font-bold text-sm">Referral bonus system</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="p-6 bg-brand-black text-white rounded-xl shadow-card flex justify-between items-center">
+                            <p class="font-bold text-xl">Total Raised: $17M+</p>
+                            <span class="px-3 py-1 bg-brand-yellow text-brand-black font-bold text-xs rounded">Backers: Polychain, VanEck</span>
+                        </div>
+                        <div class="p-6 border border-brand-border rounded-xl">
+                            <p class="text-sm font-bold mb-2">$200,000 Token Rewards Campaign</p>
+                            <p class="text-xs text-brand-muted leading-relaxed">Early depositors earned a share of the $200k pool over a 21-day period ending April 2, 2026.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: RISKS -->
+        <section id="risks" class="bg-brand-light py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12">
+                    <p class="text-brand-yellow font-bold text-xs uppercase tracking-widest mb-2">Risks & Safety</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-black">Know before you deposit</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl border border-brand-border shadow-card border-l-4 border-red-500">
+                        <h4 class="font-bold text-lg mb-2">Smart contract risk</h4>
+                        <p class="text-sm text-brand-muted leading-relaxed">Audited by Trail of Bits, Halborn, Code4rena. Bug bounty active.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl border border-brand-border shadow-card border-l-4 border-amber-500">
+                        <h4 class="font-bold text-lg mb-2">Variable yield</h4>
+                        <p class="text-sm text-brand-muted leading-relaxed">8.5% is not fixed or guaranteed. Compresses when TVL grows.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl border border-brand-border shadow-card border-l-4 border-blue-500">
+                        <h4 class="font-bold text-lg mb-2">Withdrawal delay</h4>
+                        <p class="text-sm text-brand-muted leading-relaxed">Async vaults have 7-day redemption windows.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: ECOSYSTEM -->
+        <section id="ecosystem" class="bg-white py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center">
+                    <p class="text-brand-yellow font-bold text-xs uppercase tracking-widest mb-2">Ecosystem</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-black">Partners & integrations</h2>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-16">
+                    <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">Polychain Capital</div>
+                    <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">YZi Labs</div>
+                    <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">VanEck</div>
+                    <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">Binance Wallet</div>
+                    <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">Figment</div>
+                </div>
+
+                <div class="bg-brand-black text-white p-12 rounded-3xl relative overflow-hidden">
+                    <div class="relative z-10 max-w-2xl">
+                        <h3 class="text-3xl font-bold mb-6">Built by Blueprint Finance</h3>
+                        <p class="text-brand-lightGray text-lg mb-8 leading-relaxed">
+                            Blueprint Finance is a team of quantitative developers and DeFi natives focused on building high-grade yield infrastructure.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <span class="px-4 py-2 bg-white/10 rounded-lg text-sm font-bold">Ethereum Mainnet</span>
+                            <span class="px-4 py-2 bg-white/10 rounded-lg text-sm font-bold">Arbitrum</span>
+                            <span class="px-4 py-2 bg-white/10 rounded-lg text-sm font-bold">Solana (Glow Finance)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-black text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center border-b border-white/10 pb-12 mb-12">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-brand-yellow flex items-center justify-center rounded">
+                        <span class="text-brand-black font-bold text-xl">C</span>
+                    </div>
+                    <span class="text-white font-bold text-xl tracking-tight">Concrete</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-6 text-sm text-brand-lightGray">
+                    <a href="#overview" class="hover:text-brand-yellow">Overview</a>
+                    <a href="#yield" class="hover:text-brand-yellow">Yield</a>
+                    <a href="#smart-contracts" class="hover:text-brand-yellow">Smart Contracts</a>
+                    <a href="guide.html" class="hover:text-brand-yellow">Beginner's Guide</a>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <a href="https://x.com/ConcreteXYZ" target="_blank" class="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="text-center text-xs text-brand-lightGray">
+                <p>© 2026 Blueprint Finance · Not financial advice</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

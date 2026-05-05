@@ -1,0 +1,12 @@
+{
+  "name": "concrete-lens",
+  "version": "1.0.0",
+  "description": "Concrete DApp Information Hub",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

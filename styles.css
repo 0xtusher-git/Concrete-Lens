@@ -1,0 +1,120 @@
+/* Custom Styles for Concrete */
+
+:root {
+    --brand-yellow: #F5E97A;
+    --brand-black: #1A1A1A;
+}
+
+/* Custom Card with left yellow border */
+.card-accent-yellow {
+    border-left: 4px solid var(--brand-yellow) !important;
+}
+
+/* Nav Link active state */
+.nav-link.active {
+    color: var(--brand-yellow);
+    border-bottom-color: var(--brand-yellow);
+}
+
+/* Code Block Styles */
+pre {
+    background-color: var(--brand-black) !important;
+    color: white !important;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    overflow-x: auto;
+    position: relative;
+}
+
+pre code {
+    color: #e2e8f0;
+}
+
+/* Keyword highlighting for code */
+.code-keyword { color: var(--brand-yellow); }
+.code-function { color: #82aaff; }
+.code-comment { color: #637777; }
+
+/* Section Transitions */
+section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* Metric Cards */
+.metric-card {
+    background-color: var(--brand-black);
+    color: white;
+    border-left: 4px solid var(--brand-yellow);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+/* Architecture Flow Diagram */
+.flow-step {
+    position: relative;
+}
+
+.flow-step:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    right: -1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--brand-yellow);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+    .flow-step:not(:last-child)::after {
+        content: "↓";
+        right: 50%;
+        bottom: -2rem;
+        top: auto;
+        transform: translateX(50%);
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Smooth Transitions */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+
+/* Pulsing animation */
+@keyframes pulse-yellow {
+    0% { box-shadow: 0 0 0 0 rgba(245, 233, 122, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(245, 233, 122, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 233, 122, 0); }
+}
+
+.pulse-active {
+    animation: pulse-yellow 2s infinite;
+}
+
+.pill-active {
+    background-color: var(--brand-yellow) !important;
+    color: var(--brand-black) !important;
+}
