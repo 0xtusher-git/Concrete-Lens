@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concrete | Full-stack Yield Infrastructure for DeFi</title>
+    <title>Concrete Lens — Independent Educational Guide to Concrete XYZ</title>
     <meta name="description" content="Concrete aggregates yield across Aave, Compound, Morpho, Pendle, Curve and more into a single ERC-4626 vault.">
     
     <!-- Fonts -->
@@ -134,13 +134,16 @@
                         </div>
                         <div class="metric-card bg-brand-black text-white border-l-4 border-brand-yellow p-6 rounded-lg shadow-card">
                             <p class="text-brand-yellow text-2xl font-bold">~8.5%</p>
-                            <p class="text-brand-lightGray text-sm">USDT APR (live)</p>
+                            <p class="text-brand-lightGray text-sm">USDT APR (as of March 2026)</p>
                         </div>
                         <div class="metric-card bg-brand-black text-white border-l-4 border-brand-yellow p-6 rounded-lg shadow-card">
                             <p class="text-brand-yellow text-2xl font-bold">125K</p>
                             <p class="text-brand-lightGray text-sm">X followers</p>
                         </div>
                     </div>
+                    <p class="text-[10px] text-brand-lightGray/60 mb-12 italic">
+                        Yield rates are variable and change with market conditions. Figures shown are approximate and not guaranteed.
+                    </p>
 
                     <div class="flex flex-col sm:flex-row gap-4">
                         <a href="https://docs.concrete.xyz" target="_blank" class="inline-flex items-center justify-center px-8 py-3 bg-brand-yellow text-brand-black font-semibold rounded-lg hover:bg-brand-hover transition-colors">
@@ -193,7 +196,7 @@
                             <div class="flex justify-between items-start mb-4">
                                 <div>
                                     <h3 class="font-bold text-lg">Sentora / Lombard Vault</h3>
-                                    <p class="text-sm text-brand-muted">Receipt token: ctSentora</p>
+                                    <p class="text-sm text-brand-muted">Receipt token: assigned at deployment</p>
                                 </div>
                                 <span class="px-3 py-1 bg-gray-100 text-brand-black text-xs font-bold rounded-full">Reduced fee</span>
                             </div>
@@ -209,7 +212,7 @@
                             <div class="flex justify-between items-start mb-4">
                                 <div>
                                     <h3 class="font-bold text-lg">Vanilla Lending (Aave / Compound)</h3>
-                                    <p class="text-sm text-brand-muted">Receipt token: ctVanilla</p>
+                                    <p class="text-sm text-brand-muted">Receipt token: assigned at deployment</p>
                                 </div>
                                 <span class="px-3 py-1 bg-gray-100 text-brand-black text-xs font-bold rounded-full">Baseline</span>
                             </div>
@@ -354,12 +357,25 @@
                         </div>
                         <div id="tab-strategies" class="tab-content hidden">
                             <p class="mb-6 text-brand-muted">Strategies for Aave, Compound, Morpho, and Pendle yield optimization.</p>
-                            <pre class="bg-brand-black text-white p-6 rounded-xl overflow-x-auto font-mono text-sm"><code><span class="text-blue-400">function</span> <span class="text-yellow-400">harvest</span>() <span class="text-blue-400">external</span>
-<span class="text-blue-400">function</span> <span class="text-yellow-400">rebalance</span>(uint256 amount) <span class="text-blue-400">external</span></code></pre>
+                            <pre class="bg-brand-black text-white p-6 rounded-xl overflow-x-auto font-mono text-sm"><code><span class="text-blue-400">function</span> <span class="text-yellow-400">allocateFunds</span>(bytes calldata data) <span class="text-blue-400">external</span> <span class="text-blue-400">returns</span> (uint256)
+<span class="text-blue-400">function</span> <span class="text-yellow-400">deallocateFunds</span>(bytes calldata data) <span class="text-blue-400">external</span> <span class="text-blue-400">returns</span> (uint256)
+<span class="text-blue-400">function</span> <span class="text-yellow-400">withdraw</span>(uint256 amount) <span class="text-blue-400">external</span> <span class="text-blue-400">returns</span> (uint256)
+<span class="text-blue-400">function</span> <span class="text-yellow-400">totalAssets</span>() <span class="text-blue-400">external</span> <span class="text-blue-400">view</span> <span class="text-blue-400">returns</span> (uint256)
+<span class="text-blue-400">function</span> <span class="text-yellow-400">asset</span>() <span class="text-blue-400">external</span> <span class="text-blue-400">view</span> <span class="text-blue-400">returns</span> (address)
+<span class="text-blue-400">function</span> <span class="text-yellow-400">strategyType</span>() <span class="text-blue-400">external</span> <span class="text-blue-400">view</span> <span class="text-blue-400">returns</span> (StrategyType)</code></pre>
+                            <p class="mt-4 text-[10px] text-brand-muted">
+                                Strategy types: ATOMIC (single transaction, accurate accounting) · ASYNC (multi-transaction, may have stale accounting) · CROSSCHAIN (cross-chain operations)
+                            </p>
                         </div>
                         <div id="tab-hooks" class="tab-content hidden">
                             <p class="mb-6 text-brand-muted">Pre/Post hooks for deposit and withdrawal tracking and fee distribution.</p>
-                            <pre class="bg-brand-black text-white p-6 rounded-xl overflow-x-auto font-mono text-sm"><code><span class="text-blue-400">function</span> <span class="text-yellow-400">beforeDeposit</span>(uint256 assets, uint256 shares) <span class="text-blue-400">internal</span> <span class="text-blue-400">override</span></code></pre>
+                            <pre class="bg-brand-black text-white p-6 rounded-xl overflow-x-auto font-mono text-sm"><code><span class="text-blue-400">function</span> <span class="text-yellow-400">preDeposit</span>(address sender, uint256 assets, address receiver, uint256 totalAssets) <span class="text-blue-400">external</span>
+<span class="text-blue-400">function</span> <span class="text-yellow-400">postDeposit</span>(address sender, uint256 assets, uint256 shares, address receiver, uint256 totalAssets) <span class="text-blue-400">external</span>
+<span class="text-blue-400">function</span> <span class="text-yellow-400">preWithdraw</span>(address sender, uint256 assets, address receiver, uint256 totalAssets) <span class="text-blue-400">external</span>
+<span class="text-blue-400">function</span> <span class="text-yellow-400">postWithdraw</span>(address sender, uint256 assets, uint256 shares, address receiver, uint256 totalAssets) <span class="text-blue-400">external</span></code></pre>
+                            <p class="mt-4 text-[10px] text-brand-muted">
+                                10 hook intervention points total: PRE/POST for deposit, mint, withdraw, redeem, and strategy add/remove. Controlled by HOOK_MANAGER role.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -442,11 +458,22 @@
                     <div class="space-y-6">
                         <div class="p-6 bg-brand-black text-white rounded-xl shadow-card flex justify-between items-center">
                             <p class="font-bold text-xl">Total Raised: $17M+</p>
-                            <span class="px-3 py-1 bg-brand-yellow text-brand-black font-bold text-xs rounded">Backers: Polychain, VanEck</span>
+                            <span class="px-3 py-1 bg-brand-yellow text-brand-black font-bold text-xs rounded">Backers: Polychain Capital · YZi Labs (ex-Binance Labs) · VanEck</span>
                         </div>
-                        <div class="p-6 border border-brand-border rounded-xl">
-                            <p class="text-sm font-bold mb-2">$200,000 Token Rewards Campaign</p>
-                            <p class="text-xs text-brand-muted leading-relaxed">Early depositors earned a share of the $200k pool over a 21-day period ending April 2, 2026.</p>
+                        <div class="p-6 border border-brand-border rounded-xl space-y-4">
+                            <p class="text-sm font-bold border-b border-brand-border pb-2">Funding Detail</p>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-brand-muted italic">Round 1: $7.5M seed</span>
+                                <span class="font-bold text-brand-black">YZi Labs, VanEck</span>
+                            </div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-brand-muted italic">Round 2: $9.5M strategic</span>
+                                <span class="font-bold text-brand-black">Polychain Capital + YZi Labs</span>
+                            </div>
+                            <div class="pt-2 border-t border-brand-border flex justify-between font-bold">
+                                <span>Total:</span>
+                                <span>$17M+</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -492,6 +519,9 @@
                     <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">VanEck</div>
                     <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">Binance Wallet</div>
                     <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">Figment</div>
+                    <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">Hypernative</div>
+                    <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">TRES Finance</div>
+                    <div class="bg-gray-50 border border-brand-border p-6 rounded-xl flex items-center justify-center text-center font-bold text-xs text-brand-muted">Theo / thUSD</div>
                 </div>
 
                 <div class="bg-brand-black text-white p-12 rounded-3xl relative overflow-hidden">
