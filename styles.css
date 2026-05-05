@@ -118,3 +118,27 @@ section {
     background-color: var(--brand-yellow) !important;
     color: var(--brand-black) !important;
 }
+
+/* Announcement Banner */
+#announcement-banner {
+    background-color: var(--brand-yellow);
+    color: var(--brand-black);
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.banner-hidden {
+    display: none !important;
+}
+
+/* Adjust navbar when banner is present */
+.navbar-with-banner {
+    top: 32px; /* Height of the banner */
+}
+
+@media (max-width: 640px) {
+    .navbar-with-banner {
+        top: 48px; /* Slightly taller on mobile due to wrapping if any */
+    }
+}

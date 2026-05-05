@@ -1,6 +1,24 @@
 // Initialize Lucide Icons
 lucide.createIcons();
 
+// Announcement Banner Logic
+const banner = document.getElementById('announcement-banner');
+const dismissBtn = document.getElementById('dismiss-banner');
+const nav = document.getElementById('navbar');
+
+if (localStorage.getItem('bannerDismissed') === 'true') {
+    banner.classList.add('banner-hidden');
+    nav.style.top = '0';
+    nav.classList.remove('navbar-with-banner');
+}
+
+dismissBtn.addEventListener('click', () => {
+    banner.classList.add('banner-hidden');
+    nav.style.top = '0';
+    nav.classList.remove('navbar-with-banner');
+    localStorage.setItem('bannerDismissed', 'true');
+});
+
 // Mobile Menu Toggle
 const mobileMenuButton = document.getElementById('mobile-menu-button');
 const mobileMenu = document.getElementById('mobile-menu');

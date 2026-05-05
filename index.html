@@ -48,8 +48,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-white font-sans text-brand-grayText">
+    <!-- Announcement Banner -->
+    <div id="announcement-banner" class="w-full py-2 px-4 flex items-center justify-center relative z-[60]">
+        <p class="text-center pr-8">
+            This is not the official Concrete website. Concrete Lens is an independent educational guide built for beginners. 
+            Official site: <a href="https://concrete.xyz" target="_blank" class="underline font-bold hover:text-brand-black/70 transition-colors">concrete.xyz</a>
+        </p>
+        <button id="dismiss-banner" class="absolute right-4 p-1 hover:bg-black/10 rounded-full transition-colors">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
     <!-- Navigation -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-brand-black transition-all duration-300">
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-brand-black transition-all duration-300 navbar-with-banner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
